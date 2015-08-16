@@ -54,8 +54,13 @@ window.onload = function(){
         count;
 
     territory = prompt("Введите название территории:");
-    for (count = 0; count < 3; count++){
-        getData(requests[count], doRequest(requests[count]));
+
+    if (territory == null || territory == ''){
+        alert('Название территории не должно быть пустым.');
+    } else {
+        for (count = 0; count < 3; count++){
+            getData(requests[count], doRequest(requests[count]));
+        }
     }
 };
 
@@ -111,11 +116,7 @@ function doRequest(request) {
             if (population != null) {
                 alert('Население ' + territory + ': ' + population);
             } else {
-                if (territory == null) {
-                    alert('Название территории не должно быть пустым.');
-                } else {
-                    alert('Нет информации по ' + territory + '.');
-                }
+                alert('Нет информации по ' + territory + '.');
             }
         }
     };
