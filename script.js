@@ -115,6 +115,7 @@ function doRequest(request) {
 
             if (population != null) {
                 alert('Население ' + territory + ': ' + population);
+                console.log(population);
             } else {
                 alert('Нет информации по ' + territory + '.');
             }
