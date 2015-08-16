@@ -45,20 +45,20 @@ function getData(url, callback) {
  * Ваши изменения ниже
  */
 
-var responses = {}, 
+var responses = {},
     territory;
 
-window.onload = function(){
+window.onload = function () {
 
-    var requests = ['/countries', '/cities', '/populations'], 
+    var requests = ['/countries', '/cities', '/populations'],
         count;
 
     territory = prompt("Введите название территории:");
 
-    if (territory == null || territory == ''){
+    if (territory == null || territory == '') {
         alert('Название территории не должно быть пустым.');
     } else {
-        for (count = 0; count < 3; count++){
+        for (count = 0; count < 3; count++) {
             getData(requests[count], doRequest(requests[count]));
         }
     }
@@ -68,15 +68,15 @@ function doRequest(request) {
 
     return function (error, result) {
 
-        var l = [], 
-            country = [], 
-            city = [], 
+        var l = [],
+            country = [],
+            city = [],
             population = null,
-            i, 
+            i,
             j;
 
         responses[request] = result;
-        
+
         for (K in responses) {
             l.push(K);
         }
