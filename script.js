@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Реализация API, не изменяйте ее
  * @param {string} url
  * @param {function} callback
@@ -7,7 +7,7 @@ function getData(url, callback) {
     var RESPONSES = {
         '/countries': [
             {name: 'Cameroon', continent: 'Africa'},
-            {name :'Fiji Islands', continent: 'Oceania'},
+            {name: 'Fiji Islands', continent: 'Oceania'},
             {name: 'Guatemala', continent: 'North America'},
             {name: 'Japan', continent: 'Asia'},
             {name: 'Yugoslavia', continent: 'Europe'},
@@ -19,7 +19,7 @@ function getData(url, callback) {
             {name: 'Quetzaltenango', country: 'Guatemala'},
             {name: 'Osaka', country: 'Japan'},
             {name: 'Subotica', country: 'Yugoslavia'},
-            {name: 'Zanzibar', country: 'Tanzania'},
+            {name: 'Zanzibar', country: 'Tanzania'}
         ],
         '/populations': [
             {count: 138000, name: 'Bamenda'},
@@ -38,50 +38,83 @@ function getData(url, callback) {
         }
 
         callback(null, result);
-    }, Math.round(Math.random * 1000));
+    }, Math.round(Math.random() * 1000));
 }
 
 /**
  * Ваши изменения ниже
  */
-var requests = ['/countries', '/cities', '/populations'];
-var responses = {};
 
-for (i = 0; i < 3; i++) {
-    var request = requests[i];
-    var callback = function (error, result) {
+var requests = ['/countries', '/cities', '/populations'], 
+    responses = {}, 
+    territory,
+    count;
+
+window.onload = function(){
+    territory = prompt("Введите название территории:");
+    for (count = 0; count < 3; count++){
+        getData(requests[count], doRequest(requests[count]));
+    }
+};
+
+function doRequest(request) {
+
+    return function (error, result) {
+
+        var l = [], 
+            country = [], 
+            city = [], 
+            population = null,
+            i, 
+            j;
+
         responses[request] = result;
-        var l = [];
-        for (K in responses)
+        
+        for (K in responses) {
             l.push(K);
+        }
 
         if (l.length == 3) {
-            var c = [], cc = [], p = 0;
+
             for (i = 0; i < responses['/countries'].length; i++) {
-                if (responses['/countries'][i].continent === 'Africa') {
-                    c.push(responses['/countries'][i].name);
+                if (responses['/countries'][i].continent === territory) {
+                    country.push(responses['/countries'][i].name);
                 }
+            }
+
+            if (country.length == 0) {
+                country.push(territory);
             }
 
             for (i = 0; i < responses['/cities'].length; i++) {
-                for (j = 0; j < c.length; j++) {
-                    if (responses['/cities'][i].country === c[j]) {
-                        cc.push(responses['/cities'][i].name);
+                for (j = 0; j < country.length; j++) {
+                    if (responses['/cities'][i].country === country[j]) {
+                        city.push(responses['/cities'][i].name);
                     }
                 }
+            }
+
+            if (city.length == 0) {
+                city.push(territory);
             }
 
             for (i = 0; i < responses['/populations'].length; i++) {
-                for (j = 0; j < cc.length; j++) {
-                    if (responses['/populations'][i].name === cc[j]) {
-                        p += responses['/populations'][i].count;
+                for (j = 0; j < city.length; j++) {
+                    if (responses['/populations'][i].name === city[j]) {
+                        population += responses['/populations'][i].count;
                     }
                 }
             }
 
-            console.log('Total population in African cities: ' + p);
+            if (population != null) {
+                alert('Население ' + territory + ': ' + population);
+            } else {
+                if (territory == null) {
+                    alert('Название территории не должно быть пустым.');
+                } else {
+                    alert('Нет информации по ' + territory + '.');
+                }
+            }
         }
     };
-
-    getData(request, callback);
 }
