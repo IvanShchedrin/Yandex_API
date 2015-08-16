@@ -45,12 +45,14 @@ function getData(url, callback) {
  * Ваши изменения ниже
  */
 
-var requests = ['/countries', '/cities', '/populations'], 
-    responses = {}, 
-    territory,
-    count;
+var responses = {}, 
+    territory;
 
 window.onload = function(){
+
+    var requests = ['/countries', '/cities', '/populations'], 
+        count;
+
     territory = prompt("Введите название территории:");
     for (count = 0; count < 3; count++){
         getData(requests[count], doRequest(requests[count]));
